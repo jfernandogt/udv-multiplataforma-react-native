@@ -13,18 +13,18 @@ import {
 
 // Define tus servicios y las rutas base para sus CRUDs
 const servicesToManage = [
-  { id: "personas", name: "Personas", path: "/personas" },
+  { id: "personas", name: "Personas", path: "/persona" },
   { id: "facultades", name: "Facultades", path: "/facultades" },
-  { id: "carreras", name: "Carreras", path: "/carreras" },
-  { id: "departamentos", name: "Departamentos", path: "/departamentos" },
+  { id: "carreras", name: "Carreras", path: "/carrera" },
+  { id: "departamentos", name: "Departamentos", path: "/departamento" },
   {
     id: "areascientificas",
     name: "Áreas Científicas",
-    path: "/areascientificas",
+    path: "/areascientifica",
   },
   { id: "investigaciones", name: "Investigaciones", path: "/investigaciones" },
-  { id: "municipios", name: "Municipios", path: "/municipios" },
-  { id: "titulos", name: "Títulos", path: "/titulos" },
+  { id: "municipios", name: "Municipios", path: "/municipio" },
+  { id: "titulos", name: "Títulos", path: "/titulo" },
   // Para tablas de unión, podrías tener interfaces específicas o gestionarlas dentro de las entidades principales.
   // Por ahora, las listamos para considerar si necesitan su propio CRUD directo.
   {
