@@ -1,75 +1,109 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Colors } from "@/constants/Colors"; // Asumiendo que tienes tus colores aquí
+import { useColorScheme } from "@/hooks/useColorScheme"; // Para estilos dinámicos
+import { Link } from "expo-router";
+import React from "react";
+import {
+  FlatList,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+// Define tus servicios y las rutas base para sus CRUDs
+const servicesToManage = [
+  { id: "personas", name: "Personas", path: "/personas" },
+  { id: "facultades", name: "Facultades", path: "/facultades" },
+  { id: "carreras", name: "Carreras", path: "/carreras" },
+  { id: "departamentos", name: "Departamentos", path: "/departamentos" },
+  {
+    id: "areascientificas",
+    name: "Áreas Científicas",
+    path: "/areascientificas",
+  },
+  { id: "investigaciones", name: "Investigaciones", path: "/investigaciones" },
+  { id: "municipios", name: "Municipios", path: "/municipios" },
+  { id: "titulos", name: "Títulos", path: "/titulos" },
+  // Para tablas de unión, podrías tener interfaces específicas o gestionarlas dentro de las entidades principales.
+  // Por ahora, las listamos para considerar si necesitan su propio CRUD directo.
+  {
+    id: "investigacionpersona",
+    name: "Investigación-Persona",
+    path: "/investigacionpersona",
+  },
+  {
+    id: "personaareacientifica",
+    name: "Persona-Área Científica",
+    path: "/personaareacientifica",
+  },
+  { id: "personafacultad", name: "Persona-Facultad", path: "/personafacultad" },
+];
 
-export default function HomeScreen() {
+export default function ServicesTabScreen() {
+  const colorScheme = useColorScheme();
+  const styles = getStyles(colorScheme);
+
+  const renderItem = ({ item }: { item: (typeof servicesToManage)[0] }) => (
+    <Link href={item.path as any} asChild>
+      <Pressable style={styles.itemContainer}>
+        <Text style={styles.itemText}>{item.name}</Text>
+        <Text style={styles.itemArrow}>&rarr;</Text>
+      </Pressable>
+    </Link>
+  );
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <View style={styles.container}>
+      <Text style={styles.headerTitle}>Gestión de Entidades</Text>
+      <FlatList
+        data={servicesToManage}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+      />
+    </View>
   );
 }
 
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+const getStyles = (colorScheme: "light" | "dark" | null | undefined) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: Platform.OS === "android" ? 40 : 60, // Ajustar para evitar solapamiento con barra de estado/notch
+      paddingHorizontal: 16,
+      backgroundColor: Colors[colorScheme ?? "light"].background,
+    },
+    headerTitle: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+      textAlign: "center",
+      color: Colors[colorScheme ?? "light"].text,
+    },
+    listContent: {
+      paddingBottom: 20,
+    },
+    itemContainer: {
+      backgroundColor: Colors[colorScheme ?? "light"].background,
+      padding: 18,
+      borderRadius: 8,
+      marginBottom: 12,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      elevation: 2, // Sombra para Android
+      shadowColor: "#000", // Sombra para iOS
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+    },
+    itemText: {
+      fontSize: 18,
+      color: Colors[colorScheme ?? "light"].text,
+    },
+    itemArrow: {
+      fontSize: 18,
+      color: Colors[colorScheme ?? "light"].tint,
+    },
+  });
