@@ -13,14 +13,14 @@ import {
 
 // Define tus servicios y las rutas base para sus CRUDs
 const servicesToManage = [
-  { id: "personas", name: "Personas", path: "/persona" },
+  { id: "personas", name: "Personas", path: "/personas" },
   { id: "facultades", name: "Facultades", path: "/facultades" },
   { id: "carreras", name: "Carreras", path: "/carrera" },
   { id: "departamentos", name: "Departamentos", path: "/departamento" },
   {
     id: "areascientificas",
     name: "Áreas Científicas",
-    path: "/areascientifica",
+    path: "/areacientifica",
   },
   { id: "investigaciones", name: "Investigaciones", path: "/investigaciones" },
   { id: "municipios", name: "Municipios", path: "/municipio" },
